@@ -16,8 +16,14 @@
 package com.jagrosh.jmusicbot.settings;
 
 import com.jagrosh.jdautilities.command.GuildSettingsProvider;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+
+import org.json.JSONArray;
+
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -39,8 +45,9 @@ public class Settings implements GuildSettingsProvider
     private QueueType queueType;
     private String prefix;
     private double skipRatio;
+    private List<String> dj_names;
 
-    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, RepeatMode repeatMode, String prefix, double skipRatio, QueueType queueType)
+    public Settings(SettingsManager manager, String textId, String voiceId, String roleId, int volume, String defaultPlaylist, RepeatMode repeatMode, String prefix, double skipRatio, QueueType queueType, JSONArray dj_names)
     {
         this.manager = manager;
         try
@@ -73,6 +80,12 @@ public class Settings implements GuildSettingsProvider
         this.prefix = prefix;
         this.skipRatio = skipRatio;
         this.queueType = queueType;
+
+        this.dj_names = new ArrayList<String>();
+        for (int i = 0; i < dj_names.length(); i++) {
+            String name = dj_names.getString(i);
+            this.dj_names.add(name);
+        }
     }
     
     public Settings(SettingsManager manager, long textId, long voiceId, long roleId, int volume, String defaultPlaylist, RepeatMode repeatMode, String prefix, double skipRatio, QueueType queueType)
@@ -87,6 +100,7 @@ public class Settings implements GuildSettingsProvider
         this.prefix = prefix;
         this.skipRatio = skipRatio;
         this.queueType = queueType;
+        this.dj_names = new ArrayList<String>();
     }
     
     // Getters
@@ -133,6 +147,11 @@ public class Settings implements GuildSettingsProvider
     public QueueType getQueueType()
     {
         return queueType;
+    }
+
+    public List<String> getDJNames()
+    {
+        return dj_names;
     }
 
     @Override
@@ -193,6 +212,11 @@ public class Settings implements GuildSettingsProvider
     public void setQueueType(QueueType queueType)
     {
         this.queueType = queueType;
+        this.manager.writeSettings();
+    }
+    public void addDJName(String dj_name)
+    {
+        dj_names.add(dj_name);
         this.manager.writeSettings();
     }
 }

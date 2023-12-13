@@ -108,6 +108,7 @@ public class ForceRemoveCmd extends DJCommand
     private void removeAllEntries(User target, CommandEvent event)
     {
         int count = ((AudioHandler) event.getGuild().getAudioManager().getSendingHandler()).getQueue().removeAll(target.getIdLong());
+        String discriminator = target.getDiscriminator();
         if (count == 0)
         {
             event.replyWarning("**"+target.getName()+"** doesn't have any songs in the queue!");

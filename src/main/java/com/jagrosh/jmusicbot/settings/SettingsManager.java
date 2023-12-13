@@ -22,6 +22,8 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.util.HashMap;
 import net.dv8tion.jda.api.entities.Guild;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -60,7 +62,8 @@ public class SettingsManager implements GuildSettingsManager<Settings>
                         o.has("repeat_mode")     ? o.getEnum(RepeatMode.class, "repeat_mode"): RepeatMode.OFF,
                         o.has("prefix")          ? o.getString("prefix")                     : null,
                         o.has("skip_ratio")      ? o.getDouble("skip_ratio")                 : -1,
-                        o.has("queue_type")      ? o.getEnum(QueueType.class, "queue_type")  : QueueType.FAIR));
+                        o.has("queue_type")      ? o.getEnum(QueueType.class, "queue_type")  : QueueType.FAIR,
+                        o.has("dj_names")        ? o.getJSONArray("dj_names")                : new JSONArray()));
             });
         } catch (NoSuchFileException e) {
             // create an empty json file
@@ -124,6 +127,8 @@ public class SettingsManager implements GuildSettingsManager<Settings>
                 o.put("skip_ratio", s.getSkipRatio());
             if(s.getQueueType() != QueueType.FAIR)
                 o.put("queue_type", s.getQueueType().name());
+            if(s.getDJNames() != null)
+                o.put("dj_names", s.getDJNames());
             obj.put(Long.toString(key), o);
         });
         try {
