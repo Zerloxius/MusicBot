@@ -19,6 +19,7 @@ import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import com.jagrosh.jdautilities.examples.command.*;
+import com.jagrosh.jmusicbot.audio.SongCounter;
 import com.jagrosh.jmusicbot.commands.admin.*;
 import com.jagrosh.jmusicbot.commands.dj.*;
 import com.jagrosh.jmusicbot.commands.general.*;
@@ -177,6 +178,8 @@ public class JMusicBot
                                 RECOMMENDED_PERMS);
         aboutCommand.setIsAuthor(false);
         aboutCommand.setReplacementCharacter("\uD83C\uDFB6"); // 🎶
+
+        SongCounter.initSongCounter();
         
         // set up the command client
         CommandClientBuilder cb = new CommandClientBuilder()
@@ -191,11 +194,11 @@ public class JMusicBot
                         new PingCommand(),
                         new SettingsCmd(bot),
                         
-                        new LyricsCmd(bot),
                         new NowplayingCmd(bot),
                         new PlayCmd(bot),
                         new PlaylistsCmd(bot),
                         new QueueCmd(bot),
+                        new TopCmd(bot),
                         new RemoveCmd(bot),
                         new SearchCmd(bot),
                         new SCSearchCmd(bot),
