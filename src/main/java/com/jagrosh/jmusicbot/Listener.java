@@ -48,7 +48,7 @@ public class Listener extends ListenerAdapter
     public void onReady(ReadyEvent event) 
     {
         Logger log = LoggerFactory.getLogger("MusicBot");
-        log.warn(event.getJDA().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
+        log.info(event.getJDA().getInviteUrl(JMusicBot.RECOMMENDED_PERMS));
 
         credit(event.getJDA());
         event.getJDA().getGuilds().forEach((guild) -> 
