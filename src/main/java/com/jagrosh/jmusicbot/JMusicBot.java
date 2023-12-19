@@ -95,7 +95,7 @@ public class JMusicBot
         aboutCommand.setIsAuthor(false);
         aboutCommand.setReplacementCharacter("\uD83C\uDFB6"); // 🎶
 
-        SongCounter.initSongCounter();
+        SongCounter.initSongCounter(bot);
         
         // set up the command client
         CommandClientBuilder cb = new CommandClientBuilder()
