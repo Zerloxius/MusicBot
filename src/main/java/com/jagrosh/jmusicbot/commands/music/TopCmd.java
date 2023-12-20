@@ -51,13 +51,7 @@ public class TopCmd extends MusicCommand
         List<Entry<String, Integer>> list = SongCounter.getSongCounts();
         if(list.isEmpty())
         {
-            Message built = new MessageBuilder()
-                    .setContent(event.getClient().getWarning() + " No songs were ever played!")
-                    .build();
-            event.reply(built, m -> 
-            {
-                bot.getNowplayingHandler().setLastNPMessage(m);
-            });
+            event.reply(event.getClient().getWarning() + " No songs were ever played!"); 
             return;
         }
 
