@@ -46,23 +46,23 @@ public class TopArtistCmd extends MusicCommand
         }
         catch(NumberFormatException ignore){}
 
-        List<Entry<String, Integer>> list = SongCounter.getSongCounts();
+        List<Entry<String, Integer>> list = SongCounter.getArtistCounts();
         if(list.isEmpty())
         {
             event.reply(event.getClient().getWarning() + " No songs were ever played!"); 
             return;
         }
 
-        String[] songs = new String[list.size()];
+        String[] artists = new String[list.size()];
 
         for(int i = 0; i < list.size(); i++)
         {
             Entry<String, Integer> entry = list.get(i);
-            songs[i] =  "`[" + entry.getValue() + "]` " + entry.getKey();
+            artists[i] =  "`[" + entry.getValue() + "]` " + entry.getKey();
         }
 
-        builder.setItems(songs)
-                .setText(event.getClient().getSuccess() + " Most Played Songs")
+        builder.setItems(artists)
+                .setText(event.getClient().getSuccess() + " Most Played Artists")
                 .setUsers(event.getAuthor())
                 .setColor(event.getSelfMember().getColor());
         builder.build().paginate(event.getChannel(), pagenum);

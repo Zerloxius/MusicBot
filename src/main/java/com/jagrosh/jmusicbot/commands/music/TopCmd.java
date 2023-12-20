@@ -8,9 +8,7 @@ import com.jagrosh.jdautilities.menu.Paginator;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.SongCounter;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 
 public class TopCmd extends MusicCommand 
