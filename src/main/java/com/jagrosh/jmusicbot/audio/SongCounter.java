@@ -30,7 +30,7 @@ public class SongCounter {
         SongCounter.bot = bot;
 
         try {
-            JSONObject json = new JSONObject(new String(Files.readAllBytes(OtherUtil.getPath("songcount.json"))));
+            JSONObject json = new JSONObject(new String(Files.readAllBytes(OtherUtil.getPath("songcount.json")), StandardCharsets.UTF_8));
             json.keySet().forEach(songName ->
             {
                 int plays = json.getInt(songName);
