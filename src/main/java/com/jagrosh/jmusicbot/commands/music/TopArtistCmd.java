@@ -8,20 +8,18 @@ import com.jagrosh.jdautilities.menu.Paginator;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.SongCounter;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
-import net.dv8tion.jda.api.MessageBuilder;
 import net.dv8tion.jda.api.Permission;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.exceptions.PermissionException;
 
-public class TopCmd extends MusicCommand 
+public class TopArtistCmd extends MusicCommand 
 {
     private final Paginator.Builder builder;
     
-    public TopCmd(Bot bot)
+    public TopArtistCmd(Bot bot)
     {
         super(bot);
-        this.name = "top";
-        this.help = "shows the most played songs";
+        this.name = "hhw";
+        this.help = "shows the most played artists";
         this.arguments = "[pagenum]";
         this.aliases = bot.getConfig().getAliases(this.name);
         this.bePlaying = false;

@@ -49,6 +49,14 @@ public class SongCounter {
             .collect(Collectors.toList());
     }
 
+    public static List<Map.Entry<String, Integer>> getArtistCounts()
+    {
+        return songCounter.entrySet()
+            .stream()
+            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+            .collect(Collectors.toList());
+    }
+
     public static void countSong(AudioTrack track)
     {
         String songTitle = track.getInfo().author + " - " + track.getInfo().title;
