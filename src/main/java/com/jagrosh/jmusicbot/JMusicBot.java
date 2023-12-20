@@ -115,6 +115,7 @@ public class JMusicBot
                         new PlaylistsCmd(bot),
                         new QueueCmd(bot),
                         new TopCmd(bot),
+                        new TopArtistCmd(bot),
                         new RemoveCmd(bot),
                         new SearchCmd(bot),
                         new SCSearchCmd(bot),

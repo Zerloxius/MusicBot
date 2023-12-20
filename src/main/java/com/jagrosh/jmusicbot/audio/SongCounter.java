@@ -52,9 +52,21 @@ public class SongCounter {
     public static List<Map.Entry<String, Integer>> getArtistCounts()
     {
         return songCounter.entrySet()
-            .stream()
-            .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
-            .collect(Collectors.toList());
+        .stream()
+        .collect(Collectors.groupingBy(entry -> getArtist(entry.getKey()), LinkedHashMap::new, Collectors.summingInt(Map.Entry::getValue)))
+        .entrySet()
+        .stream()
+        .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+        .collect(Collectors.toList());
+    }
+
+    private static String getArtist(String songName) {
+        int dashIndex = songName.indexOf(" - ");
+        if (dashIndex != -1) {
+            return songName.substring(0, dashIndex);
+        } else {
+            return songName; // if no " - " is found, return the entire string as the artist
+        }
     }
 
     public static void countSong(AudioTrack track)
