@@ -1,6 +1,7 @@
 /nbproject/
 /target/
-/Playlists/
+/Playlists/*.txt
+/Playlists/*.m3u
 /test/
 *.json
 *.txt
