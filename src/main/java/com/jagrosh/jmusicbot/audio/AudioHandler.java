@@ -271,12 +271,15 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
     {
         if(isMusicPlaying(jda))
         {
-            long userid = getRequestMetadata().getOwner();
+            //long userid = getRequestMetadata().getOwner();
             AudioTrack track = audioPlayer.getPlayingTrack();
             String title = track.getInfo().title;
+            String artist = track.getInfo().author;
+            if(artist==null)
+                artist = "Unknown Artist";
             if(title==null || title.equals("Unknown Title"))
                 title = track.getInfo().uri;
-            return "**"+title+"** ["+(userid==0 ? "autoplay" : "<@"+userid+">")+"]"
+            return artist + " - **"+title+"**"
                     + "\n" + getStatusEmoji() + " "
                     + "[" + FormatUtil.formatTime(track.getDuration()) + "] "
                     + FormatUtil.volumeIcon(audioPlayer.getVolume());
