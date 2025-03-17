@@ -1,2 +1,2 @@
-python "Playlists/# convert.py"
+python "Playlists/convert.py"
 java -Dnogui=true -jar JMusicBot.jar
