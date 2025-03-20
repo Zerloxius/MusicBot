@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 public class SongCounter {
 
     private static Map<String, Integer> songCounter = new LinkedHashMap<>();
+    private static ArrayList<String> songHistory = new ArrayList<>();
     private static Bot bot;
 
     public static void initSongCounter(Bot bot)
@@ -39,6 +41,11 @@ public class SongCounter {
         } catch (Exception e) {
             log.warn("Song counter couldn't be loaded! " + e);
         }
+    }
+
+    public static ArrayList<String> getHistory()
+    {
+        return songHistory;
     }
 
     public static List<Map.Entry<String, Integer>> getSongCounts()
@@ -72,6 +79,7 @@ public class SongCounter {
     public static void countSong(AudioTrack track)
     {
         String songTitle = track.getInfo().author + " - " + track.getInfo().title;
+        songHistory.add(0, songTitle);
         songCounter.put(songTitle, songCounter.getOrDefault(songTitle, 0) + 1);
         saveCounter();
     }
