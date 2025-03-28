@@ -54,15 +54,17 @@ public class TopArtistCmd extends MusicCommand
         }
 
         String[] artists = new String[list.size()];
+        int totalSongs = 0;
 
         for(int i = 0; i < list.size(); i++)
         {
             Entry<String, Integer> entry = list.get(i);
             artists[i] =  "`[" + entry.getValue() + "]` " + entry.getKey();
+            totalSongs += entry.getValue();
         }
 
         builder.setItems(artists)
-                .setText(event.getClient().getSuccess() + " Most Played Artists")
+                .setText(event.getClient().getSuccess() + " Most Played Artists (" + totalSongs + " Songs)")
                 .setUsers(event.getAuthor())
                 .setColor(event.getSelfMember().getColor());
         builder.build().paginate(event.getChannel(), pagenum);

@@ -54,15 +54,17 @@ public class TopCmd extends MusicCommand
         }
 
         String[] songs = new String[list.size()];
+        int totalSongs = 0;
 
         for(int i = 0; i < list.size(); i++)
         {
             Entry<String, Integer> entry = list.get(i);
             songs[i] =  "`[" + entry.getValue() + "]` " + entry.getKey();
+            totalSongs += entry.getValue();
         }
 
         builder.setItems(songs)
-                .setText(event.getClient().getSuccess() + " Most Played Songs")
+                .setText(event.getClient().getSuccess() + " Most Played Songs (" + totalSongs + " Songs)")
                 .setUsers(event.getAuthor())
                 .setColor(event.getSelfMember().getColor());
         builder.build().paginate(event.getChannel(), pagenum);
