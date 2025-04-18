@@ -38,6 +38,7 @@ public class SongCounter {
                 int plays = json.getInt(songName);
                 songCounter.put(songName, plays);
             });
+            log.info("Song counter loaded! (" + songCounter.size() + " songs)");
         } catch (Exception e) {
             log.warn("Song counter couldn't be loaded! " + e);
         }
