@@ -94,7 +94,8 @@ public class SongCounter {
 
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream("songcount.json"), StandardCharsets.UTF_8))
         {
-            writer.write(jsonObject.toString(4));
+            String s = jsonObject.toString(4);
+            writer.write(s);
         } catch(IOException e){
             LoggerFactory.getLogger("Counter").warn("Failed to write to file: " + e);
         }
