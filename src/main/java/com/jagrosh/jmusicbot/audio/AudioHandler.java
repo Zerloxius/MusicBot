@@ -211,7 +211,7 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
     {
         votes.clear();
         manager.getBot().getNowplayingHandler().onTrackUpdate(track);
-        SongCounter.countSong(track);
+        SongCounter.countSong(track, guildId);
     }
 
     

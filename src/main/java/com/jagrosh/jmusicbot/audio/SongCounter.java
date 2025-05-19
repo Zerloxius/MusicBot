@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,9 @@ import org.slf4j.LoggerFactory;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.utils.OtherUtil;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.TextChannel;
 
 public class SongCounter {
 
@@ -77,15 +81,15 @@ public class SongCounter {
         }
     }
 
-    public static void countSong(AudioTrack track)
+    public static void countSong(AudioTrack track, long guildId)
     {
         String songTitle = track.getInfo().author + " - " + track.getInfo().title;
         songHistory.add(0, songTitle);
         songCounter.put(songTitle, songCounter.getOrDefault(songTitle, 0) + 1);
-        saveCounter();
+        saveCounter(guildId);
     }
 
-    private static void saveCounter()
+    private static void saveCounter(long guildId)
     {
         JSONObject jsonObject = new JSONObject(songCounter);
         // Debug PrintLine in DM Style
@@ -96,8 +100,11 @@ public class SongCounter {
         {
             String s = jsonObject.toString(4);
             writer.write(s);
-        } catch(IOException e){
+        } catch(IOException | JSONException e){
             LoggerFactory.getLogger("Counter").warn("Failed to write to file: " + e);
+            Guild guild = bot.getJDA().getGuildById(guildId);
+            TextChannel textChannel = bot.getSettingsManager().getSettings(guildId).getTextChannel(guild);
+            textChannel.sendMessage("⚠️ Failed to write to file: " + e).queue();
         }
     }
 }
