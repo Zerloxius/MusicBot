@@ -19,6 +19,7 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jmusicbot.Bot;
 import com.jagrosh.jmusicbot.audio.AudioHandler;
 import com.jagrosh.jmusicbot.audio.RequestMetadata;
+import com.jagrosh.jmusicbot.commands.DJCommand;
 import com.jagrosh.jmusicbot.commands.MusicCommand;
 import com.jagrosh.jmusicbot.utils.FormatUtil;
 
@@ -47,7 +48,7 @@ public class SkipCmd extends MusicCommand
         if(skipRatio == -1) {
           skipRatio = bot.getConfig().getSkipRatio();
         }
-        if(event.getAuthor().getIdLong() == rm.getOwner() || skipRatio == 0)
+        if(event.getAuthor().getIdLong() == rm.getOwner() || skipRatio == 0 || DJCommand.checkDJPermission(event))
         {
             event.reply(event.getClient().getSuccess()+" Skipped **"+handler.getPlayer().getPlayingTrack().getInfo().title+"**");
             handler.getPlayer().stopTrack();
