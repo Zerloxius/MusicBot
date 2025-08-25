@@ -69,8 +69,8 @@
         </dependency>
         <dependency>
             <groupId>dev.lavalink.youtube</groupId>
-            <artifactId>v2</artifactId>
-            <version>1.13.2</version>
+            <artifactId>common</artifactId>
+            <version>1.13.4</version>
         </dependency>
         <dependency>
             <groupId>com.github.jagrosh</groupId>

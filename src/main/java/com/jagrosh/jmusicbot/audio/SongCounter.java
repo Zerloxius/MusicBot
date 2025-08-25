@@ -1,15 +1,19 @@
 package com.jagrosh.jmusicbot.audio;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import org.json.JSONException;
@@ -26,7 +30,8 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 public class SongCounter {
 
-    private static Map<String, Integer> songCounter = new LinkedHashMap<>();
+    private static final Object lock = new Object();
+    private static Map<String, Integer> songCounter = new ConcurrentHashMap<>();
     private static ArrayList<String> songHistory = new ArrayList<>();
     private static Bot bot;
 
@@ -89,22 +94,51 @@ public class SongCounter {
         saveCounter(guildId);
     }
 
-    private static void saveCounter(long guildId)
-    {
-        JSONObject jsonObject = new JSONObject(songCounter);
-        // Debug PrintLine in DM Style
-        //User owner = bot.getJDA().retrieveUserById(bot.getConfig().getOwnerId()).complete();
-        //owner.openPrivateChannel().queue(pc -> pc.sendMessage(jsonObject.toString(4)).queue());
+    private static void saveCounter(long guildId) {
+        synchronized (lock) {
+            JSONObject jsonObject = new JSONObject(songCounter);
+            File tmp = new File("songcount.json.tmp");
+            File target = new File("songcount.json");
 
-        try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream("songcount.json"), StandardCharsets.UTF_8))
-        {
-            String s = jsonObject.toString(4);
-            writer.write(s);
-        } catch(IOException | JSONException e){
-            LoggerFactory.getLogger("Counter").warn("Failed to write to file: " + e);
-            Guild guild = bot.getJDA().getGuildById(guildId);
-            TextChannel textChannel = bot.getSettingsManager().getSettings(guildId).getTextChannel(guild);
-            textChannel.sendMessage("⚠️ Failed to write to file: " + e).queue();
+            try (Writer writer = new OutputStreamWriter(new FileOutputStream(tmp), StandardCharsets.UTF_8)) {
+                writer.write(jsonObject.toString(4));
+                writer.flush(); // just to be safe
+            } catch (IOException | JSONException e) {
+                LoggerFactory.getLogger("Counter").warn("⚠️ Failed to write temp file: " + e);
+                Guild guild = bot.getJDA().getGuildById(guildId);
+                TextChannel textChannel = bot.getSettingsManager().getSettings(guildId).getTextChannel(guild);
+                if (textChannel != null) {
+                    textChannel.sendMessage("⚠️ Failed to write to file: " + e).queue();
+                }
+                return; // stop, don’t try to replace the file
+            }
+
+            try {
+                Files.move(tmp.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            } catch (IOException e) {
+                LoggerFactory.getLogger("Counter").warn("⚠️ Failed to replace file: " + e);
+            }
         }
     }
+
+    // private static void saveCounter(long guildId)
+    // {
+    //     synchronized (lock) {
+    //         JSONObject jsonObject = new JSONObject(songCounter);
+    //         // Debug PrintLine in DM Style
+    //         //User owner = bot.getJDA().retrieveUserById(bot.getConfig().getOwnerId()).complete();
+    //         //owner.openPrivateChannel().queue(pc -> pc.sendMessage(jsonObject.toString(4)).queue());
+            
+    //         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream("songcount.json"), StandardCharsets.UTF_8))
+    //         {
+    //             String s = jsonObject.toString(4);
+    //             writer.write(s);
+    //         } catch(IOException | JSONException e){
+    //             LoggerFactory.getLogger("Counter").warn("Failed to write to file: " + e);
+    //             Guild guild = bot.getJDA().getGuildById(guildId);
+    //             TextChannel textChannel = bot.getSettingsManager().getSettings(guildId).getTextChannel(guild);
+    //             textChannel.sendMessage("⚠️ Failed to write to file: " + e).queue();
+    //         }
+    //     }
+    // }
 }
