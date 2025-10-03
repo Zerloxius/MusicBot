@@ -236,13 +236,17 @@ public class AudioHandler extends AudioEventAdapter implements AudioSendHandler
                     eb.setAuthor(FormatUtil.formatUsername(u), null, u.getEffectiveAvatarUrl());
             }
 
+            String title = track.getInfo().title;
+            if (title == "Unknown title")
+                title = track.getInfo().uri;
+
             try 
             {
-                eb.setTitle(track.getInfo().title, track.getInfo().uri);
+                eb.setTitle(title, track.getInfo().uri);
             }
             catch(Exception e) 
             {
-                eb.setTitle(track.getInfo().title);
+                eb.setTitle(title);
             }
 
             if(track instanceof YoutubeAudioTrack && manager.getBot().getConfig().useNPImages())
