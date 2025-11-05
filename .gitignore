@@ -1,8 +1,8 @@
 /nbproject/
 /target/
-/Playlists/*.txt
-/Playlists/*.m3u
+/Playlists/*
 /test/
 *.json
 *.txt
 nb*.xml
+WelkaBot.cmd
